@@ -15,6 +15,8 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal-security main restricted u
 deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal-updates main restricted universe multiverse
 EOF
 
+rm -rf ./rootfs/var/cache/*
+
 tar -cf ./rootfs.tar -C ./rootfs .
 
 sha256sum rootfs.tar > rootfs.tar.sha256
