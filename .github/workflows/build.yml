@@ -6,8 +6,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - run: apt install debootstrap sha256sum
-      - run: ./build.sh
+      - run: sudo apt install debootstrap sha256sum
+      - run: sudo ./build.sh
       - uses: actions/upload-artifact@v2
         with:
           name: rootfs
