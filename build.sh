@@ -8,7 +8,7 @@ EXCLUDED=$(awk '{print $1}' excluded.txt | paste -s -d, -)
 echo "Extra packages: $EXTRA"
 echo "Excluded packages: $EXCLUDED"
 
-debootstrap --include=$EXTRA --excluded=$EXCLUDED focal ./rootfs
+debootstrap --include=$EXTRA --exclude=$EXCLUDED focal ./rootfs
 
 cat > ./rootfs/etc/apt/sources.list << EOF
 deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal main restricted universe multiverse
