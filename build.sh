@@ -8,7 +8,7 @@ echo "Extra packages: $EXTRA"
 
 debootstrap --include=$EXTRA focal ./rootfs
 
-cat > ./generated/etc/apt/sources.list << EOF
+cat > ./rootfs/etc/apt/sources.list << EOF
 deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal main restricted universe multiverse
 deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal-backports main restricted universe multiverse
 deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal-security main restricted universe multiverse
