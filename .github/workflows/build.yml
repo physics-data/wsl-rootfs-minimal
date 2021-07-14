@@ -1,0 +1,16 @@
+name: Build rootfs
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - run: apt install debootstrap sha256sum
+      - run: ./build.sh
+      - uses: actions/upload-artifact@v2
+        with:
+          name: rootfs
+          path: |
+            rootfs.tar
+            rootfs.tar.sha256
