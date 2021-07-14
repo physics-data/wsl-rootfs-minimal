@@ -10,7 +10,9 @@ jobs:
       - run: sudo ./build.sh
       - uses: actions/upload-artifact@v2
         with:
-          name: rootfs
-          path: |
-            rootfs.tar
-            rootfs.tar.sha256
+          name: rootfs.tar
+          path: rootfs.tar
+      - uses: actions/upload-artifact@v2
+        with:
+          name: rootfs.tar.sha256
+          path: rootfs.tar.sha256
