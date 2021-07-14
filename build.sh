@@ -3,10 +3,12 @@
 set -e
 
 EXTRA=$(awk '{print $1}' packages.txt | paste -s -d, -)
+EXCLUDED=$(awk '{print $1}' excluded.txt | paste -s -d, -)
 
 echo "Extra packages: $EXTRA"
+echo "Excluded packages: $EXCLUDED"
 
-debootstrap --include=$EXTRA focal ./rootfs
+debootstrap --include=$EXTRA --excluded=$EXCLUDED focal ./rootfs
 
 cat > ./rootfs/etc/apt/sources.list << EOF
 deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal main restricted universe multiverse
