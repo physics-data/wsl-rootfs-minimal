@@ -17,6 +17,11 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal-security main restricted u
 deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu focal-updates main restricted universe multiverse
 EOF
 
+cat >> ./rootfs/root/.bashrc << EOF
+GATEWAY=\$(ip r | grep "^default" | awk '{ print $3 }')
+export DISPLAY=\$GATEWAY:0
+EOF
+
 rm -rf ./rootfs/var/cache/*
 
 tar -cf ./rootfs.tar -C ./rootfs .
