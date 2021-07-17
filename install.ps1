@@ -29,11 +29,11 @@ Invoke-WebRequest -uri https://meow.plus/physics-data/wsl.tar.zip -OutFile C:\ws
 
 echo "> Importing rootfs..."
 
-Expand-Archive -Path C:\wsl.tar.zip -DestinationPath C:\wsl.tar
+Expand-Archive -Path C:\wsl.tar.zip -DestinationPath C:\physics-data-wsl
 del C:\wsl.tar.zip
 
-wsl.exe --import physics-data-wsl C:\physics-data-wsl C:\wsl.tar --version 2
-del C:\wsl.tar
+wsl.exe --import physics-data-wsl C:\physics-data-wsl C:\physics-data-wsl\rootfs.tar --version 2
+del C:\physics-data-wsl\rootfs.tar
 
 echo "> Installation completed. Please use Windows Terminal to access WSL distro"
 echo "> Alternatively, run 'wsl.exe -d physics-data-wsl'"
