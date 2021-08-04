@@ -69,6 +69,10 @@ else {
 
     dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
 
+    if ($wslversion -eq 2) {
+        dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+    }
+
     echo "> WSL enabled. Please restart computer manually, and execute this script again."
 }
 
