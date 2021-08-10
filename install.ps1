@@ -51,7 +51,7 @@ if (Get-Command "wsl.exe" -ErrorAction SilentlyContinue) {
 
     echo "> Downloading rootfs..."
 
-    Invoke-WebRequest -uri https://meow.plus/physics-data/wsl.tar.zip -OutFile C:\wsl.tar.zip
+    Invoke-WebRequest -uri https://lab.cs.tsinghua.edu.cn/physics-data/rootfs.tar.zip -OutFile C:\wsl.tar.zip
 
     echo "> Importing rootfs..."
 

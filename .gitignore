@@ -1,2 +1,4 @@
 /rootfs
+/rootfs.tar
+/rootfs.tar.zip
 .*.sw[a-p]
