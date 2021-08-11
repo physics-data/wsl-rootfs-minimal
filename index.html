@@ -6,6 +6,7 @@
     <title>实验物理的大数据方法</title>
     <style>
 @import url('https://fonts.thu.fail/css2?family=Noto+Sans+SC:wght@100;300;400;500;700;900&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=Source+Code+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,900&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&family=Source+Serif+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
+@import url('https://fonts.thu.fail/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp&display=block');
 
 body {
   font-family: 'Source Sans Pro', 'Noto Sans SC', -apple-system,
@@ -68,12 +69,18 @@ a {
   position: relative;
   cursor: pointer;
 
-  display: block;
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
 
   filter: grayscale(1);
   box-shadow: rgba(0,0,0,.3) 0 2px 6px;
   border-radius: 4px;
+
+}
+
+.download span {
+  margin-right: 10px;
 }
 
 .download.primary {
@@ -118,7 +125,10 @@ a {
         <small>WSL rootfs / 安装脚本</small>
       </h1>
 
-      <a download class="download primary" href="install.ps1">安装脚本</a>
+      <a download class="download primary" href="install.ps1">
+        <span class="material-icons-outlined">file_download</span>
+        安装脚本
+      </a>
       <a download class="download" href="uninstall.ps1">卸载脚本</a>
 
       <h2>Howto</h2>
