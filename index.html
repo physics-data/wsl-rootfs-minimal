@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>实验物理的大数据方法</title>
+    <style>
+@import url('https://fonts.thu.fail/css2?family=Noto+Sans+SC:wght@100;300;400;500;700;900&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=Source+Code+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,900&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&family=Source+Serif+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
+
+body {
+  font-family: 'Source Sans Pro', 'Noto Sans SC', -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'PingFang SC',
+    'Microsoft YaHei', /* Good luck Linux users */ sans-serif;
+  margin: 0;
+  padding: 40px 0;
+  --primary: rgb(216, 91, 3);
+  --dimmed-primary: #bd7543;
+  --primary-bg: rgba(216, 91, 3, .1);
+
+  background: #333;
+  color: rgba(255,255,255,.7);
+  font-size: 16px;
+  line-height: 32px;
+}
+
+h1 {
+  font-family: 'Source Serif Pro', 'Noto Serif SC', serif;
+  letter-spacing: 5px;
+  color: white;
+  font-weight: 900;
+  font-size: 48px;
+  line-height: 64px;
+}
+
+h1 small {
+  color: var(--dimmed-primary);
+  letter-spacing: initial;
+  font-size: 18px;
+  display: block;
+  line-height: 36px;
+}
+
+h2 {
+  font-family: 'Source Serif Pro', 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 24px;
+  margin: 40px 0 10px 0;
+  color: rgba(255,255,255,.87);
+}
+
+.center {
+  padding: 20px 40px;
+  margin: 0 auto;
+  max-width: 700px;
+}
+
+a {
+  text-decoration: none;
+  color: rgba(255,255,255,.54);
+}
+
+.download {
+  background: var(--primary-bg);
+  padding: 10px 35px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+
+  display: block;
+  margin-bottom: 20px;
+
+  filter: grayscale(1);
+  box-shadow: rgba(0,0,0,.3) 0 2px 6px;
+  border-radius: 4px;
+}
+
+.download.primary {
+  filter: grayscale(0);
+  color: var(--dimmed-primary);
+  padding: 20px 35px;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.download:before {
+  background: var(--primary);
+  content: '';
+  display: block;
+  position: absolute;
+  right: 100%;
+  left: -10px;
+  top: 0;
+  bottom: 0;
+  transform: translateX(5px);
+  transition: transform .2s ease;
+}
+
+.download:hover:before {
+  transform: translateX(10px);
+}
+    </style>
+  </head>
+
+  <body>
+    <div class="center">
+      <h1>
+        实验物理的大数据方法
+        <small>WSL rootfs / 安装脚本</small>
+      </h1>
+
+      <a download class="download primary" href="install.ps1">安装脚本</a>
+      <a download class="download" href="uninstall.ps1">卸载脚本</a>
+
+      <h2>Howto</h2>
+      <ol>
+        <li>下载安装脚本，执行并给予管理员权限</li>
+        <li>如果你之前没有开启 WSL 功能，脚本将会开启 WSL。请重启计算机并重新执行安装脚本</li>
+        <li>安装完成后可以使用 Windows Terminal 启动 WSL Distro，或者你可以直接执行</li>
+        <code>
+          wsl.exe -d physics-data-wsl
+        </code>
+        <li>卸载时，直接执行卸载脚本即可</li>
+      </ol>
+    </div>
+  </body>
+
+</html>
