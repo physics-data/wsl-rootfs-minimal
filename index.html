@@ -100,6 +100,13 @@ a {
 .download:hover:before {
   transform: translateX(10px);
 }
+
+.code {
+  display: block;
+  padding: 10px 20px;
+  border-radius: 4px;
+  box-shadow: rgba(0,0,0,.3) 0 2px 6px inset;
+}
     </style>
   </head>
 
@@ -118,10 +125,11 @@ a {
         <li>如果你之前没有开启 WSL 功能，请先执行一次脚本。这将会开启 WSL。请重启计算机并继续</li>
         <li>下载并安装 <a href="https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi">WSL2 Kernel Update</a></li>
         <li>下载安装脚本，执行并给予管理员权限</li>
-        <li>安装完成后可以使用 Windows Terminal 启动 WSL Distro，或者你可以直接执行</li>
-        <code>
-          wsl.exe -d physics-data-wsl
-        </code>
+        <li>安装完成后可以使用 Windows Terminal 启动 WSL Distro，或者你可以直接执行
+          <code class="code">
+            wsl.exe -d physics-data-wsl
+          </code>
+        </li>
         <li>卸载时，直接执行卸载脚本即可</li>
       </ol>
     </div>
