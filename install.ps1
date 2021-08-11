@@ -6,6 +6,8 @@ function Test-Admin {
     $currentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
 }
 
+Function WSL-SetDefaultUser ($distro, $user) { Get-ItemProperty Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Lxss\*\ DistributionName | Where-Object -Property DistributionName -eq $distro | Set-ItemProperty -Name DefaultUid -Value ((wsl -d $distro -u $user -e id -u) | Out-String); };
+
 if (-not (Test-Admin)) {
     if ($elevated) {
         # tried to elevate, did not work, aborting
@@ -60,6 +62,8 @@ if (Get-Command "wsl.exe" -ErrorAction SilentlyContinue) {
 
     wsl.exe --import physics-data-wsl C:\physics-data-wsl C:\physics-data-wsl\rootfs.tar --version $wslversion
     del C:\physics-data-wsl\rootfs.tar
+
+    WSL-SetDefaultUser physics-data-wsl debian
 
     echo "> Installation completed. Please use Windows Terminal to access WSL distro"
     echo "> Alternatively, run 'wsl.exe -d physics-data-wsl'"
