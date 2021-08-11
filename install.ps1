@@ -39,13 +39,7 @@ if ($winversion -lt 14393) {
 
 $wslversion = 1
 if ($winversion -ge 18362) {
-    if ($wininfo.HyperVRequirementVirtualizationFirmwareEnabled) {
-        $wslversion = 2
-    }
-    else {
-        echo "> Your system supports WSL2, but VT is not enabled. Continue with WSL1."
-        pause
-    }
+    $wslversion = 2
 }
 
 if (Get-Command "wsl.exe" -ErrorAction SilentlyContinue) {
