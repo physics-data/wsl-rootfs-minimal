@@ -6,3 +6,4 @@ python3-pip
 libhdf5-dev
 bash-completion
 command-not-found
+ssh
