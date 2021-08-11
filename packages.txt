@@ -7,3 +7,14 @@ libhdf5-dev
 bash-completion
 command-not-found
 ssh
+sudo
+sl
+cowsay
+cmatrix
+x11-apps
+wget
+curl
+screen
+tmux
+iproute2
+vim
