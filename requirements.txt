@@ -1,0 +1,9 @@
+wheel
+matplotlib
+h5py
+pandas
+scipy
+numpy
+pillow
+jupyter
+tables
