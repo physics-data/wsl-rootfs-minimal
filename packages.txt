@@ -7,16 +7,14 @@ libhdf5-dev
 hdf5-tools
 bash-completion
 command-not-found
-ssh
+openssh-client
 sudo
 sl
 cowsay
 cmatrix
-x11-apps
 wget
 curl
 screen
 tmux
 iproute2
-vim-gtk3
 
