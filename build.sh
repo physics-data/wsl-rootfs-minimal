@@ -27,6 +27,7 @@ in-root-put() {
     in-root tee "$1" > /dev/null
 }
 
+
 # generate config files
 in-root-put /etc/apt/sources.list << EOF
 deb https://mirrors.tuna.tsinghua.edu.cn/debian bullseye main contrib non-free
@@ -46,7 +47,6 @@ in-root usermod -G sudo -a $USERNAME
 echo "$USERNAME:$USERNAME" | in-root chpasswd
 as-user python3 -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 cat requirements.txt | as-user python3 -m pip install --user -r /dev/stdin
-echo 'export PATH="$PATH:$HOME/.local/bin"' | as-user cat >> /home/$USER/.bashrc
 
 # clean cache
 in-root rm -rf ./rootfs/var/cache/*
