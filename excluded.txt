@@ -1,3 +1,5 @@
 shared-mime-info
 libicu66
 libxml2
+isc-dhcp-client
+isc-dhcp-common

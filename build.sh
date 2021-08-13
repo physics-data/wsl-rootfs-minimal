@@ -4,38 +4,63 @@ set -e
 
 ROOTFS=./rootfs
 USERNAME=debian
+SUITE=bullseye
 
-EXTRA=$(awk '{print $1}' packages.txt | paste -s -d, -)
-EXCLUDED=$(awk '{print $1}' excluded.txt | paste -s -d, -)
+BUILD_MIRROR="https://mirrors.tuna.tsinghua.edu.cn/debian"
+EXTRA_PKGS=$(awk '{print $1}' packages.txt | paste -s -d " " -)
+EXCLUDED_PKGS=$(awk '{print $1}' excluded.txt | paste -s -d, -)
 
-echo "Extra packages: $EXTRA"
-echo "Excluded packages: $EXCLUDED"
+echo "Extra packages: $EXTRA_PKGS"
+echo "Excluded packages: $EXCLUDED_PKGS"
 
 rm -rf "$ROOTFS"
 
-debootstrap --include=$EXTRA --exclude=$EXCLUDED bullseye "$ROOTFS"
+debootstrap --include=gnupg --exclude=$EXCLUDED_PKGS --components=main,contrib,non-free "$SUITE" "$ROOTFS" "$BUILD_MIRROR"
 
 in-root(){
-    chroot "$ROOTFS" "$@"
+    sudo chroot "$ROOTFS" "$@"
 }
 
 as-user(){
-    chroot "$ROOTFS" sudo -H -u "$USERNAME" "$@"
+    sudo chroot "$ROOTFS" sudo -H -u "$USERNAME" "$@"
 }
 
 in-root-put() {
     in-root tee "$1" > /dev/null
 }
 
+# bind mount in chroot
+for i in sys proc; do
+    sudo mount --bind /$i "$ROOTFS/$i"
+done
 
-# generate config files
-in-root-put /etc/apt/sources.list << EOF
-deb https://mirrors.tuna.tsinghua.edu.cn/debian bullseye main contrib non-free
-deb https://mirrors.tuna.tsinghua.edu.cn/debian bullseye-backports main contrib non-free
-deb https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main
-deb https://mirrors.tuna.tsinghua.edu.cn/debian bullseye-updates main contrib non-free
+# pre-config
+in-root debconf-set-selections <<EOF
+locales	locales/locales_to_be_generated	multiselect	en_US.UTF-8 UTF-8, zh_CN.UTF-8 UTF-8
+locales	locales/default_environment_locale	select	en_US.UTF-8
+tzdata	tzdata/Areas	select	Asia
+tzdata	tzdata/Zones/Asia	select	Shanghai
 EOF
 
+in-root rm -f "/etc/locale.gen"
+in-root ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+in-root dpkg-reconfigure --frontend noninteractive locales < /dev/null
+in-root dpkg-reconfigure --frontend noninteractive tzdata < /dev/null
+
+# apt config
+in-root-put /etc/apt/sources.list << EOF
+deb $BUILD_MIRROR $SUITE main contrib non-free
+deb $BUILD_MIRROR $SUITE-backports main contrib non-free
+deb $BUILD_MIRROR-security $SUITE-security main
+deb $BUILD_MIRROR $SUITE-updates main contrib non-free
+EOF
+
+# install extra packages
+in-root apt-get update
+in-root apt-get --no-install-recommends -y install "$EXTRA_PKGS"
+in-root apt-get -y dist-upgrade
+
+# WSL config
 in-root-put /etc/wsl.conf << EOF
 [user]
 default=debian
@@ -48,8 +73,11 @@ echo "$USERNAME:$USERNAME" | in-root chpasswd
 as-user python3 -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 cat requirements.txt | as-user python3 -m pip install --user -r /dev/stdin
 
-# clean cache
-in-root rm -rf ./rootfs/var/cache/*
+# clean up
+in-root apt-get clean
+in-root apt-get check
+in-root rm -rf var/cache/*
+sudo umount rootfs/proc rootfs/sys
 
 # build image
 tar -cf ./rootfs.tar -C ./rootfs .

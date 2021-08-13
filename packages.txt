@@ -17,5 +17,5 @@ curl
 screen
 tmux
 iproute2
-vim
+vim-gtk3
 vitables
