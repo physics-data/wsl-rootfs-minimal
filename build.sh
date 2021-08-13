@@ -2,39 +2,56 @@
 
 set -e
 
+ROOTFS=./rootfs
+USERNAME=debian
+
 EXTRA=$(awk '{print $1}' packages.txt | paste -s -d, -)
 EXCLUDED=$(awk '{print $1}' excluded.txt | paste -s -d, -)
 
 echo "Extra packages: $EXTRA"
 echo "Excluded packages: $EXCLUDED"
 
-rm -rf ./rootfs
+rm -rf "$ROOTFS"
 
-debootstrap --include=$EXTRA --exclude=$EXCLUDED bullseye ./rootfs
+debootstrap --include=$EXTRA --exclude=$EXCLUDED bullseye "$ROOTFS"
 
-cat > ./rootfs/etc/apt/sources.list << EOF
+in-root(){
+    chroot "$ROOTFS" "$@"
+}
+
+as-user(){
+    chroot "$ROOTFS" sudo -H -u "$USERNAME" "$@"
+}
+
+in-root-put() {
+    in-root tee "$1" > /dev/null
+}
+
+# generate config files
+in-root-put /etc/apt/sources.list << EOF
 deb https://mirrors.tuna.tsinghua.edu.cn/debian bullseye main contrib non-free
 deb https://mirrors.tuna.tsinghua.edu.cn/debian bullseye-backports main contrib non-free
 deb https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main
 deb https://mirrors.tuna.tsinghua.edu.cn/debian bullseye-updates main contrib non-free
 EOF
 
-cat >> ./rootfs/etc/wsl.conf << EOF
+in-root-put /etc/wsl.conf << EOF
 [user]
 default=debian
 EOF
 
-chroot ./rootfs << EOF
-useradd -m -s /bin/bash debian
-usermod -G sudo -a debian
+# bootstrap user
+in-root useradd -m -s /bin/bash $USERNAME
+in-root usermod -G sudo -a $USERNAME
+echo "$USERNAME:$USERNAME" | in-root chpasswd
+as-user python3 -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+cat requirements.txt | as-user python3 -m pip install --user -r /dev/stdin
+echo 'export PATH="$PATH:$HOME/.local/bin"' | as-user cat >> /home/$USER/.bashrc
 
-echo "debian:deadly-solar-laser" | chpasswd
-pip3 config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-pip3 install wheel matplotlib h5py pandas scipy numpy pillow
-EOF
+# clean cache
+in-root rm -rf ./rootfs/var/cache/*
 
-rm -rf ./rootfs/var/cache/*
-
+# build image
 tar -cf ./rootfs.tar -C ./rootfs .
 sha256sum rootfs.tar > rootfs.tar.sha256
 zip -9 rootfs.tar.zip rootfs.tar
