@@ -4,6 +4,7 @@ iproute2
 python3
 python3-pip
 libhdf5-dev
+hdf5-tools
 bash-completion
 command-not-found
 ssh
@@ -18,4 +19,4 @@ screen
 tmux
 iproute2
 vim-gtk3
-vitables
+
