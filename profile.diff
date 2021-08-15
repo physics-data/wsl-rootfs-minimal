@@ -1,0 +1,4 @@
+3a4
+> if [ -z "${WSL_DISTRO_NAME}" ]; then
+7a9
+> fi

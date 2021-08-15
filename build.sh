@@ -80,6 +80,9 @@ echo "$USERNAME:$USERNAME" | in-root chpasswd
 as-user python3 -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 as-user python3 -m pip install --user $PYPI_PKGS
 
+# Patching profile
+sudo patch rootfs/etc/profile < profile.diff
+
 # clean up
 in-root apt-get clean
 in-root apt-get check
